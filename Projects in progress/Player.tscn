@@ -1,0 +1,162 @@
+[gd_scene load_steps=15 format=3 uid="uid://cy34gmm5rrqd5"]
+
+[ext_resource type="Script" path="res://Player.gd" id="1_ak4ib"]
+[ext_resource type="Texture2D" uid="uid://d3gqunvlcb2k8" path="res://Images/IdleAnimationHero_0001.png" id="2_cng82"]
+[ext_resource type="Texture2D" uid="uid://3ls5w0qlfvj3" path="res://Images/IdleAnimationHero_0002.png" id="3_qit2e"]
+[ext_resource type="Texture2D" uid="uid://cx7kjd00dv3wf" path="res://Images/IdleAnimationHero_0003.png" id="4_08uxf"]
+[ext_resource type="Texture2D" uid="uid://bnrfg6g5io4xp" path="res://Images/IdleAnimationHero_0004.png" id="5_sdo1i"]
+[ext_resource type="Texture2D" uid="uid://2ko57btxobbf" path="res://Images/RunAnimationHero_0001.png" id="6_vlndh"]
+[ext_resource type="Texture2D" uid="uid://ti48mu4rmsp1" path="res://Images/RunAnimationHero_0002.png" id="7_0fiux"]
+[ext_resource type="Texture2D" uid="uid://uvf4mot6iiwm" path="res://Images/RunAnimationHero_0003.png" id="8_wl8n0"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_64oei"]
+radius = 5.71429
+height = 13.4286
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jcgn7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_cng82")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_qit2e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_08uxf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_sdo1i")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_vlndh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_0fiux")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_wl8n0")
+}],
+"loop": true,
+"name": &"Run",
+"speed": 5.0
+}]
+
+[sub_resource type="Animation" id="Animation_apyad"]
+resource_name = "Idle"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"Idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="Animation" id="Animation_1chjh"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"Idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+
+[sub_resource type="Animation" id="Animation_dfurn"]
+resource_name = "Run"
+length = 0.3
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"Run"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 1, 2]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mbn63"]
+_data = {
+"Idle": SubResource("Animation_apyad"),
+"RESET": SubResource("Animation_1chjh"),
+"Run": SubResource("Animation_dfurn")
+}
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_ak4ib")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(7, 7)
+shape = SubResource("CapsuleShape2D_64oei")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, 3.00001)
+scale = Vector2(8.9375, 8.25)
+sprite_frames = SubResource("SpriteFrames_jcgn7")
+animation = &"Idle"
+frame = 1
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "Idle"
+libraries = {
+"": SubResource("AnimationLibrary_mbn63")
+}
